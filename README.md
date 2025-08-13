@@ -15,11 +15,11 @@ In all other respects, this library is the same. Please see Stuart's
 
 Add the following dependency to your deps.edn file:
 
-    weavejester/dependency {:mvn/version "0.2.1"}
+    weavejester/dependency {:mvn/version "1.0.0"}
 
 Or to your Leiningen project file:
 
-    [weavejester/dependency "0.2.1"]
+    [weavejester/dependency "1.0.0"]
 
 
 ## Copyright and License
