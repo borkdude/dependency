@@ -1,109 +1,25 @@
 # Dependency
 
-A data structure for representing dependency graphs in Clojure.
+This is a fork of Stuart Sierra's [Dependency][] library that adds
+an optional comparator to the `topo-sort` function that provides
+secondary ordering when the dependency order is ambiguous. This change
+was made so that `topo-sort` can be deterministic.
 
-This library provides a basic implementation of a directed acyclic
-graph (DAG) data structure, represented as a pair of maps. It is
-immutable and persistent.
+In all other respects, this library is the same. Please see Stuart's
+[README][] for more information.
 
-Nodes in the graph may be any type which supports Clojure's equality
-semantics such as keywords, symbols, or strings.
+[dependency]: https://github.com/stuartsierra/dependency
+[readme]: https://github.com/stuartsierra/dependency/blob/master/README.md
 
-I originally developed this library to support namespace dependency
-tracking in [tools.namespace], where it is still included under the
-name `clojure.tools.namespace.dependency`.
+## Installation
 
-I am releasing this library independently so that other projects can
-use it without adding a dependency on all of tools.namespace.
+Add the following dependency to your deps.edn file:
 
-[tools.namespace]: https://github.com/clojure/tools.namespace
+    weavejester/dependency {:mvn/version "0.2.1"}
 
-
-## Releases and Dependency Information
-
-This library is released on [Clojars]. Latest release is 0.2.1
-
-[Leiningen] dependency information:
+Or to your Leiningen project file:
 
     [weavejester/dependency "0.2.1"]
-
-[Clojars]: http://clojars.org/
-[Leiningen]: http://leiningen.org/
-
-
-## Version Compatibility
-
-Version 0.2.0 requires Clojure 1.7.0 or higher for
-Conditional Read (`.cljc`) support.
-
-Version 0.2.0 also supports ClojureScript versions with
-Conditional Read.
-
-Version 0.1.1 of this library remains compatible with
-Clojure versions 1.3.0, 1.4.0, and 1.5.1.
-
-
-## Usage
-
-    (require '[weavejester.dependency :as dep])
-
-Create a new dependency graph:
-
-    (def g1 (-> (dep/graph)
-                (dep/depend :b :a)   ; "B depends on A"
-                (dep/depend :c :b)   ; "C depends on B"
-                (dep/depend :c :a)   ; "C depends on A"
-                (dep/depend :d :c))) ; "D depends on C"
-
-This creates a structure like the following:
-
-         :a
-        / |
-      :b  |
-        \ |
-         :c
-          |
-         :d
-
-Ask questions of the graph:
-
-    (dep/transitive-dependencies g1 :d)
-    ;;=> #{:a :c :b}
-
-    (dep/depends? g1 :d :b)
-    ;;=> true
-
-Get a topological sort:
-
-    (dep/topo-sort g1)
-    ;;=> (:a :b :c :d)
-
-Refer to the docstrings for more API documentation. Refer to the tests
-for more examples.
-
-
-## Development and Contributing
-
-This library is a repackaging of `clojure.tools.namespace.dependency`.
-All changes must go through [tools.namespace] and the Clojure
-[contributing] process.
-
-
-## Change Log
-
-* Release 0.2.1 on 21-Jan-2018
-  * Add secondary comparator to `topo-sort` for deterministic ordering
-* Release 0.2.0 on 18-Sept-2015
-  * Convert to `.cljc` for ClojureScript support
-  * Apply enhancements and fixes up to [tools.namespace]
-    version 0.3.0-alpha1
-* Release 0.1.1 on 03-Jun-2013
-  * A node may not depend on itself; fixes [#1]
-* Release 0.1.0 on 07-Apr-2013
-
-[#1]: https://github.com/stuartsierra/dependency/pull/1
-[tools.namespace]: https://github.com/clojure/tools.namespace
-[contributing]: http://dev.clojure.org/display/community/Contributing
 
 
 ## Copyright and License
